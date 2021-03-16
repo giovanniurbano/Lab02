@@ -35,7 +35,7 @@ public class FXMLController {
     	String info[] = txtWord.getText().split(" ");
     	if(info.length == 1) {
 	    	String word = info[0].toLowerCase();
-	    	if((info[0].contains("?"))) {
+	    	if((info[0].matches("((?=.*[?]).{1,})"))) {
 	    		if(this.ricercaWildcard(word).isEmpty())
 	    			txtResult.setText("Parola non presente");
 	    		else {
@@ -52,6 +52,10 @@ public class FXMLController {
 	    		else
 	    			txtResult.setText("Parola non presente");
 	    	}
+	    	else {
+	    		txtResult.setText("Formato errato, inserire solo lettere");
+	    		return;
+	    	}
     	}
     	if(info.length == 2) {
 	    	String word = info[0].toLowerCase();
@@ -66,6 +70,10 @@ public class FXMLController {
 	    			this.addParola(p);
 	    			txtResult.setText(p.toString());
 	    		}
+	    	}
+	    	else {
+	    		txtResult.setText("Formato errato, inserire solo lettere");
+	    		return;
 	    	}
     	}
     }
@@ -83,13 +91,26 @@ public class FXMLController {
 	
 	public ArrayList<WordEnhanced> ricercaWildcard(String s) {
 		ArrayList<WordEnhanced> res = new ArrayList<WordEnhanced>();
-		String parti[] = s.toLowerCase().split("?");
-		System.out.println(parti[0] + " " + parti[1]);
-		for(String w : this.dizionario.keySet()) {
-			if(w.contains(parti[0]) && w.contains(parti[1])) {
-				res.add(this.dizionario.get(w));
+		String parti[] = s.toLowerCase().split("\\?");
+		
+		if(s.substring(s.length()-1).compareTo("?") == 0)
+			for(String w : this.dizionario.keySet()) {
+				if(w.contains(s.substring(0, s.length()-2))) {
+					res.add(this.dizionario.get(w));
+				}
 			}
-		}
+		if(s.substring(0, 1).compareTo("?") == 0)
+			for(String w : this.dizionario.keySet()) {
+				if(w.contains(s.substring(1))) {
+					res.add(this.dizionario.get(w));
+				}
+			}
+		else 
+			for(String ww : this.dizionario.keySet()) {
+				if(ww.contains(parti[0]) && ww.contains(parti[1])) {
+					res.add(this.dizionario.get(ww));
+				}
+			}
 		return res;
 	}
     @FXML
