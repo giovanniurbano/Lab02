@@ -46,7 +46,7 @@ public class FXMLController {
 	    			txtResult.setText(s);
 	    		}
 	    	}
-	    	else if(word.matches("((?=.*[a-z]).{1,})")){
+	    	else if(word.matches("([a-z]*)")){
 	    		if(this.ricercaParola(word) != null)
 	    			txtResult.setText(this.ricercaParola(word).toString());
 	    		else
@@ -60,7 +60,7 @@ public class FXMLController {
     	if(info.length == 2) {
 	    	String word = info[0].toLowerCase();
 	    	String traduzione = info[1].toLowerCase();
-	    	if(word.matches("((?=.*[a-z]).{1,})") && (traduzione.matches("((?=.*[a-z]).{1,})"))){
+	    	if(word.matches("([a-z]*)") && (traduzione.matches("([a-z]*)"))){
 	    		if(this.ricercaParola(word) != null) {
 	    			this.ricercaParola(word).addTraduzione(traduzione);
 	    			txtResult.setText(this.ricercaParola(word).toString());
